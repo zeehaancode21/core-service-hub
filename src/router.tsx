@@ -7,7 +7,11 @@ export const getRouter = () => {
 
   const router = createRouter({
     routeTree,
-    // No basename — this app deploys at the domain root (zeehaancode21.github.io)
+    // This site is deployed as a GitHub Pages *project* page at
+    // https://zeehaancode21.github.io/core-service-hub/ — so every route
+    // needs the "/core-service-hub" prefix. import.meta.env.BASE_URL is set
+    // automatically from the `base` option in vite.config.ts, so both stay in sync.
+    basepath: import.meta.env.BASE_URL,
     context: { queryClient },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
