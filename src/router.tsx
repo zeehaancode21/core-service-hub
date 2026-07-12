@@ -8,8 +8,8 @@ export const getRouter = () => {
   const router = createRouter({
     routeTree,
     // This site is deployed as a GitHub Pages *project* page at
-    // https://zeehaancode21.github.io/core-service-hub/ — so every route
-    // needs the "/core-service-hub" prefix. import.meta.env.BASE_URL is set
+    // https://zeehaancode21.github.io/wintech/ — so every route
+    // needs the "/wintech" prefix. import.meta.env.BASE_URL is set
     // automatically from the `base` option in vite.config.ts, so both stay in sync.
     basepath: import.meta.env.BASE_URL,
     context: { queryClient },
