@@ -26,6 +26,12 @@ import {
   Heart,
   Rocket,
   Zap as ZapIcon,
+  Quote,
+  Briefcase,
+  Calendar,
+  ThumbsUp,
+  User,
+  ChevronLeft,
 } from "lucide-react";
 import { SITE } from "@/lib/site";
 import { SERVICES } from "@/lib/services";
@@ -34,7 +40,7 @@ import { HeroSlider } from "@/components/site/HeroSlider";
 import { Counter, Reveal } from "@/components/site/motion";
 import { TestimonialsCarousel, type Testimonial } from "@/components/site/TestimonialsCarousel";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -170,7 +176,7 @@ const FloatingParticles = () => {
   );
 };
 
-// Enhanced Animated Logo Component with Multiple Pop Effects
+// Animated Logo Component
 const AnimatedLogo = () => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -180,7 +186,6 @@ const AnimatedLogo = () => {
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
     >
-      {/* Main Logo Container with 3D Pop Effect */}
       <motion.div
         className="relative"
         initial={{ scale: 0, rotate: -180, opacity: 0 }}
@@ -192,7 +197,6 @@ const AnimatedLogo = () => {
           duration: 0.8,
         }}
       >
-        {/* Glow Rings */}
         <motion.div
           className="absolute inset-0 rounded-full bg-accent/20"
           animate={{
@@ -209,8 +213,6 @@ const AnimatedLogo = () => {
           }}
           transition={{ duration: 0.6, delay: 0.1 }}
         />
-
-        {/* Logo Icon with Pop Animation */}
         <motion.div
           className="relative grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-accent to-primary text-white shadow-xl"
           whileHover={{
@@ -229,7 +231,6 @@ const AnimatedLogo = () => {
             },
           }}
         >
-          {/* Animated Background Pattern */}
           <motion.div
             className="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent/50 to-primary/50"
             animate={{
@@ -241,8 +242,6 @@ const AnimatedLogo = () => {
               ease: "linear",
             }}
           />
-          
-          {/* Sparkle Effect */}
           <motion.div
             className="absolute -right-1 -top-1"
             animate={{
@@ -253,8 +252,6 @@ const AnimatedLogo = () => {
           >
             <Sparkles className="h-4 w-4 text-accent" />
           </motion.div>
-
-          {/* Main Icon */}
           <motion.div
             animate={{
               rotate: isHovered ? 360 : 0,
@@ -264,8 +261,6 @@ const AnimatedLogo = () => {
           >
             <ShieldCheck className="h-8 w-8 relative z-10" />
           </motion.div>
-
-          {/* Inner Glow */}
           <motion.div
             className="absolute inset-0 rounded-2xl bg-white/20"
             animate={{
@@ -275,8 +270,6 @@ const AnimatedLogo = () => {
           />
         </motion.div>
       </motion.div>
-
-      {/* Logo Text with Pop Animation */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
@@ -324,8 +317,6 @@ const AnimatedLogo = () => {
           Technology Solutions
         </motion.p>
       </motion.div>
-
-      {/* Floating Stars */}
       {[0, 1, 2].map((i) => (
         <motion.div
           key={i}
@@ -352,24 +343,21 @@ const AnimatedLogo = () => {
   );
 };
 
-// Enhanced Learn More Popup with Unique Animations
-const LearnMorePopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const features = [
-    { icon: Camera, title: "CCTV Surveillance", desc: "HD cameras with night vision and remote access", color: "from-blue-500 to-cyan-400" },
-    { icon: Server, title: "Server Solutions", desc: "On-premise & cloud servers with backup", color: "from-purple-500 to-pink-400" },
-    { icon: Network, title: "Networking", desc: "Structured cabling & WiFi solutions", color: "from-green-500 to-emerald-400" },
-    { icon: Building, title: "Electrical Works", desc: "Panel upgrades & complete wiring", color: "from-yellow-500 to-orange-400" },
-    { icon: Cpu, title: "IT Support", desc: "Hardware, software & AMC contracts", color: "from-red-500 to-rose-400" },
-    { icon: Settings, title: "Biometrics", desc: "Attendance systems & access control", color: "from-indigo-500 to-violet-400" },
-  ];
+// Enhanced Testimonial Popup Component (No Avatar, No Role)
+const TestimonialPopup = ({ testimonial, isOpen, onClose }: { 
+  testimonial: Testimonial | null; 
+  isOpen: boolean; 
+  onClose: () => void;
+}) => {
+  if (!testimonial) return null;
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop with blur */}
+          {/* Backdrop with blur and scale */}
           <motion.div
-            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md"
+            className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xl"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -385,16 +373,410 @@ const LearnMorePopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
           >
             <motion.div
+              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl bg-gradient-to-br from-surface via-card to-surface shadow-2xl"
+              initial={{ scale: 0.9, opacity: 0, rotateX: 20 }}
+              animate={{ scale: 1, opacity: 1, rotateX: 0 }}
+              exit={{ scale: 0.9, opacity: 0, rotateX: 20 }}
+              transition={{ delay: 0.1, type: "spring", damping: 20 }}
+              style={{ transformStyle: "preserve-3d" }}
+            >
+              {/* Decorative header with animated gradient */}
+              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-accent via-primary to-accent bg-[length:200%_200%] animate-gradient-shift" />
+
+              {/* Decorative background elements */}
+              <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/10 blur-3xl" />
+              <div className="absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
+
+              {/* Close Button */}
+              <motion.button
+                onClick={onClose}
+                className="absolute right-4 top-4 z-10 rounded-full bg-black/10 p-2.5 text-foreground/60 hover:bg-black/20 hover:text-foreground transition-all backdrop-blur-sm"
+                whileHover={{ rotate: 90, scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <X className="h-5 w-5" />
+              </motion.button>
+
+              {/* Content */}
+              <div className="relative p-6 sm:p-8 lg:p-10">
+                {/* Header with decorative quote icon */}
+                <motion.div
+                  className="mb-6"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <motion.div
+                    className="mb-4 flex items-center gap-3"
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.15 }}
+                  >
+                    <div className="rounded-xl bg-gradient-to-br from-accent to-primary p-2">
+                      <Quote className="h-5 w-5 text-white" />
+                    </div>
+                    <span className="text-sm font-semibold uppercase tracking-wider text-accent">
+                      Client Testimonial
+                    </span>
+                  </motion.div>
+
+                  <motion.h3
+                    className="font-display text-2xl font-bold text-primary"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.25 }}
+                  >
+                    {testimonial.name}
+                  </motion.h3>
+                  
+                  <motion.div
+                    className="flex flex-wrap items-center gap-3 mt-2"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <span className="flex items-center text-sm font-semibold text-accent">
+                      <Calendar className="mr-1.5 h-3.5 w-3.5" />
+                      {testimonial.service}
+                    </span>
+                  </motion.div>
+                </motion.div>
+
+                {/* Testimonial Text with decorative quote marks */}
+                <motion.div
+                  className="relative"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35 }}
+                >
+                  <div className="absolute -left-2 -top-2 text-6xl text-accent/10 font-serif">"</div>
+                  <div className="pl-6">
+                    <p className="text-lg leading-relaxed text-foreground/90">
+                      {testimonial.text}
+                    </p>
+                  </div>
+                  <div className="absolute -right-2 -bottom-2 text-6xl text-accent/10 font-serif rotate-180">"</div>
+                </motion.div>
+
+                {/* Rating and Stats */}
+                <motion.div
+                  className="mt-8 flex flex-wrap items-center gap-4 border-t border-border pt-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <div className="flex items-center gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <motion.div
+                        key={star}
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.45 + star * 0.05 }}
+                      >
+                        <Star className="h-4 w-4 fill-accent text-accent" />
+                      </motion.div>
+                    ))}
+                  </div>
+                  <span className="text-sm font-semibold text-foreground">5.0</span>
+                  <span className="h-4 w-px bg-border" />
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <ThumbsUp className="h-4 w-4 text-accent" />
+                    <span>Verified Client</span>
+                  </div>
+                  <span className="h-4 w-px bg-border" />
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Users className="h-4 w-4 text-accent" />
+                    <span>Happy Customer</span>
+                  </div>
+                </motion.div>
+
+                {/* Call to Action */}
+                <motion.div
+                  className="mt-6 flex flex-wrap gap-3"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  <motion.a
+                    href={`tel:${SITE.phone}`}
+                    className="flex-1 min-w-[120px] rounded-xl bg-gradient-to-r from-accent to-primary px-4 py-2.5 text-center text-sm font-semibold text-white shadow-lg transition-all hover:shadow-xl hover:shadow-accent/30"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Phone className="mr-2 inline h-4 w-4" />
+                    Call Now
+                  </motion.a>
+                  <motion.a
+                    href={`https://wa.me/${SITE.whatsapp}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex-1 min-w-[120px] rounded-xl border-2 border-accent/30 bg-transparent px-4 py-2.5 text-center text-sm font-semibold text-foreground transition-all hover:border-accent hover:bg-accent/5"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <MessageSquare className="mr-2 inline h-4 w-4" />
+                    WhatsApp
+                  </motion.a>
+                  <motion.button
+                    onClick={onClose}
+                    className="flex-1 min-w-[120px] rounded-xl border border-border bg-card px-4 py-2.5 text-center text-sm font-semibold text-muted-foreground transition-all hover:bg-surface hover:text-foreground"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Close
+                  </motion.button>
+                </motion.div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+};
+
+// Clickable Testimonial Tile Component (No Avatar, No Role)
+const ClickableTestimonialTile = ({ testimonial, onClick }: { 
+  testimonial: Testimonial; 
+  onClick: () => void;
+}) => {
+  return (
+    <motion.button
+      onClick={onClick}
+      className="w-full text-left group"
+      whileHover={{ scale: 1.02, y: -5 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 300 }}
+    >
+      <div className="relative overflow-hidden rounded-xl border border-border bg-card p-6 transition-all hover:border-accent hover:shadow-xl hover:shadow-accent/20">
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        
+        <div className="relative">
+          {/* Header with name and quote icon */}
+          <div className="flex items-start justify-between gap-3 mb-3">
+            <div className="flex-1 min-w-0">
+              <h4 className="font-semibold text-foreground group-hover:text-accent transition-colors text-lg">
+                {testimonial.name}
+              </h4>
+              <span className="text-xs font-medium text-accent bg-accent/10 px-2 py-0.5 rounded-full inline-block mt-1">
+                {testimonial.service}
+              </span>
+            </div>
+            <motion.div
+              className="flex-shrink-0 rounded-xl bg-gradient-to-br from-accent/10 to-primary/10 p-2 text-accent"
+              whileHover={{ rotate: 360, scale: 1.1 }}
+              transition={{ duration: 0.6 }}
+            >
+              <Quote className="h-4 w-4" />
+            </motion.div>
+          </div>
+          
+          {/* Testimonial preview */}
+          <p className="text-sm text-muted-foreground line-clamp-3 mb-3">
+            "{testimonial.text}"
+          </p>
+          
+          {/* Rating */}
+          <div className="flex items-center gap-1">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <Star key={star} className="h-3.5 w-3.5 fill-accent text-accent" />
+            ))}
+          </div>
+          
+          {/* Click indicator */}
+          <motion.div
+            className="absolute bottom-3 right-3 rounded-full bg-accent/10 p-1.5 text-accent opacity-0 group-hover:opacity-100 transition-opacity"
+            whileHover={{ rotate: 90 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ChevronRight className="h-3.5 w-3.5" />
+          </motion.div>
+        </div>
+      </div>
+    </motion.button>
+  );
+};
+
+// Fixed Carousel Component with Countdown Timer
+const FixedTestimonialsCarousel = ({ items }: { items: Testimonial[] }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const CAROUSEL_INTERVAL = 5000; // 5 seconds
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % items.length);
+    setProgress(0);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
+    setProgress(0);
+  };
+
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    
+    const startTime = Date.now();
+    const timer = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const newProgress = (elapsed / CAROUSEL_INTERVAL) * 100;
+      
+      if (newProgress >= 100) {
+        setProgress(100);
+        nextSlide();
+      } else {
+        setProgress(newProgress);
+      }
+    }, 50); // Update every 50ms for smooth animation
+
+    return () => clearInterval(timer);
+  }, [isAutoPlaying, currentIndex, items.length]);
+
+  const currentItem = items[currentIndex];
+
+  return (
+    <div className="relative w-full max-w-3xl mx-auto">
+      {/* Testimonial Card */}
+      <div className="relative rounded-2xl bg-card border border-border p-6 sm:p-8 shadow-lg">
+        <div className="absolute top-4 right-4 text-accent/20">
+          <Quote className="h-12 w-12" />
+        </div>
+        
+        <div className="relative">
+          {/* Rating - Fixed position above text */}
+          <div className="flex items-center gap-1 mb-4">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <Star key={star} className="h-4 w-4 fill-accent text-accent" />
+            ))}
+          </div>
+          
+          {/* Testimonial Text */}
+          <p className="text-base sm:text-lg leading-relaxed text-foreground/90 mb-4">
+            "{currentItem.text}"
+          </p>
+          
+          {/* Client Info */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h4 className="font-semibold text-foreground">{currentItem.name}</h4>
+              <span className="text-sm text-accent font-medium">{currentItem.service}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Progress Bar with Timer */}
+      <div className="mt-6">
+        <div className="flex items-center justify-between gap-4 mb-2">
+          <span className="text-xs text-muted-foreground">
+            Auto-slide in <span className="font-semibold text-accent">{Math.ceil((100 - progress) / 20)}s</span>
+          </span>
+          <button
+            onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+            className="text-xs text-muted-foreground hover:text-accent transition-colors"
+          >
+            {isAutoPlaying ? 'Pause' : 'Play'}
+          </button>
+        </div>
+        
+        {/* Progress Bar */}
+        <div className="h-1 w-full rounded-full bg-accent/10 overflow-hidden">
+          <motion.div
+            className="h-full rounded-full bg-gradient-to-r from-accent to-primary"
+            style={{ width: `${progress}%` }}
+            transition={{ duration: 0.05 }}
+          />
+        </div>
+      </div>
+
+      {/* Navigation Controls - With more bottom spacing */}
+      <div className="flex items-center justify-center gap-4 mt-6 pt-2">
+        <motion.button
+          onClick={prevSlide}
+          className="rounded-full bg-accent/10 p-3 text-accent hover:bg-accent/20 transition-colors"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          aria-label="Previous testimonial"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </motion.button>
+        
+        {/* Dots */}
+        <div className="flex items-center gap-2">
+          {items.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                setCurrentIndex(index);
+                setProgress(0);
+              }}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                index === currentIndex ? 'w-8 bg-accent' : 'w-2 bg-accent/30 hover:bg-accent/50'
+              }`}
+              aria-label={`Go to testimonial ${index + 1}`}
+            />
+          ))}
+        </div>
+        
+        <motion.button
+          onClick={nextSlide}
+          className="rounded-full bg-accent/10 p-3 text-accent hover:bg-accent/20 transition-colors"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          aria-label="Next testimonial"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </motion.button>
+      </div>
+      
+      {/* Counter Info */}
+      <div className="text-center mt-3">
+        <span className="text-xs text-muted-foreground">
+          {currentIndex + 1} / {items.length}
+        </span>
+      </div>
+    </div>
+  );
+};
+
+// Learn More Popup Component
+const LearnMorePopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  const features = [
+    { icon: Camera, title: "CCTV Surveillance", desc: "HD cameras with night vision and remote access", color: "from-blue-500 to-cyan-400" },
+    { icon: Server, title: "Server Solutions", desc: "On-premise & cloud servers with backup", color: "from-purple-500 to-pink-400" },
+    { icon: Network, title: "Networking", desc: "Structured cabling & WiFi solutions", color: "from-green-500 to-emerald-400" },
+    { icon: Building, title: "Electrical Works", desc: "Panel upgrades & complete wiring", color: "from-yellow-500 to-orange-400" },
+    { icon: Cpu, title: "IT Support", desc: "Hardware, software & AMC contracts", color: "from-red-500 to-rose-400" },
+    { icon: Settings, title: "Biometrics", desc: "Attendance systems & access control", color: "from-indigo-500 to-violet-400" },
+  ];
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <motion.div
+            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+          />
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            initial={{ opacity: 0, scale: 0.8, y: 50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 50 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+          >
+            <motion.div
               className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-gradient-to-br from-surface via-card to-surface shadow-2xl"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ delay: 0.1 }}
             >
-              {/* Decorative header gradient */}
               <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-accent via-primary to-accent bg-[length:200%_200%] animate-gradient-shift" />
-
-              {/* Close Button */}
               <motion.button
                 onClick={onClose}
                 className="absolute right-4 top-4 z-10 rounded-full bg-black/10 p-2 text-foreground/60 hover:bg-black/20 hover:text-foreground transition-colors"
@@ -403,10 +785,7 @@ const LearnMorePopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
               >
                 <X className="h-5 w-5" />
               </motion.button>
-
-              {/* Content */}
               <div className="p-6 sm:p-8 lg:p-10">
-                {/* Header */}
                 <motion.div
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -431,8 +810,6 @@ const LearnMorePopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                     We deliver end-to-end solutions with guaranteed quality and support.
                   </p>
                 </motion.div>
-
-                {/* Features Grid */}
                 <motion.div
                   className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
                   initial="hidden"
@@ -480,8 +857,6 @@ const LearnMorePopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                     );
                   })}
                 </motion.div>
-
-                {/* Stats & CTA */}
                 <motion.div
                   className="mt-8 grid gap-4 sm:grid-cols-3"
                   initial={{ opacity: 0, y: 20 }}
@@ -515,8 +890,6 @@ const LearnMorePopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                     );
                   })}
                 </motion.div>
-
-                {/* Bottom CTA */}
                 <motion.div
                   className="mt-8 flex flex-wrap gap-4"
                   initial={{ opacity: 0, y: 20 }}
@@ -561,7 +934,7 @@ const LearnMorePopup = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
   );
 };
 
-// Enhanced Learn More Button with Multiple Animation Layers
+// Learn More Button Component
 const LearnMoreButton = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -580,7 +953,6 @@ const LearnMoreButton = ({ children, className = "" }: { children: React.ReactNo
           backgroundSize: "200% 200%",
         }}
       >
-        {/* Animated Gradient Background */}
         <motion.div
           className="absolute inset-0"
           animate={{
@@ -596,8 +968,6 @@ const LearnMoreButton = ({ children, className = "" }: { children: React.ReactNo
             backgroundSize: "300% 300%",
           }}
         />
-
-        {/* Rotating Glow Ring */}
         <motion.div
           className="absolute inset-0 rounded-xl"
           animate={{
@@ -611,19 +981,13 @@ const LearnMoreButton = ({ children, className = "" }: { children: React.ReactNo
             ease: "easeInOut",
           }}
         />
-
-        {/* Floating Particles */}
         {isHovered && (
           <>
             {[0, 1, 2, 3].map((i) => (
               <motion.div
                 key={i}
                 className="absolute h-1 w-1 rounded-full bg-white/60"
-                initial={{ 
-                  x: "50%", 
-                  y: "50%",
-                  opacity: 0 
-                }}
+                initial={{ x: "50%", y: "50%", opacity: 0 }}
                 animate={{
                   x: ["50%", `${30 + Math.random() * 40}%`],
                   y: ["50%", `${20 + Math.random() * 60}%`],
@@ -638,10 +1002,7 @@ const LearnMoreButton = ({ children, className = "" }: { children: React.ReactNo
             ))}
           </>
         )}
-
-        {/* Content */}
         <span className="relative z-10 flex items-center gap-3">
-          {/* Pulsing Icon */}
           <motion.div
             animate={{
               scale: isHovered ? [1, 1.3, 1] : 1,
@@ -654,10 +1015,7 @@ const LearnMoreButton = ({ children, className = "" }: { children: React.ReactNo
           >
             <Rocket className="h-4 w-4" />
           </motion.div>
-          
           {children}
-          
-          {/* Bouncing Arrow */}
           <motion.span
             animate={{ 
               x: isHovered ? [0, 8, 0] : [0, 5, 0],
@@ -672,8 +1030,6 @@ const LearnMoreButton = ({ children, className = "" }: { children: React.ReactNo
             <ArrowRight className="h-4 w-4" />
           </motion.span>
         </span>
-
-        {/* Shine Effect */}
         <motion.div
           className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent"
           animate={{
@@ -685,8 +1041,6 @@ const LearnMoreButton = ({ children, className = "" }: { children: React.ReactNo
             ease: "easeInOut",
           }}
         />
-
-        {/* Border Glow */}
         <motion.div
           className="absolute -inset-0.5 rounded-xl opacity-0 group-hover:opacity-100"
           animate={{
@@ -704,19 +1058,31 @@ const LearnMoreButton = ({ children, className = "" }: { children: React.ReactNo
           }}
         />
       </motion.button>
-
       <LearnMorePopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
     </>
   );
 };
 
 function Home() {
+  const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial | null>(null);
+  const [isTestimonialPopupOpen, setIsTestimonialPopupOpen] = useState(false);
+
+  const handleTestimonialClick = (testimonial: Testimonial) => {
+    setSelectedTestimonial(testimonial);
+    setIsTestimonialPopupOpen(true);
+  };
+
+  const handleCloseTestimonialPopup = () => {
+    setIsTestimonialPopupOpen(false);
+    setTimeout(() => setSelectedTestimonial(null), 300);
+  };
+
   return (
     <>
       {/* HERO */}
       <HeroSlider />
 
-      {/* STATS STRIP with animated background */}
+      {/* STATS STRIP */}
       <section className="relative overflow-hidden bg-primary py-10 text-white">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,107,53,0.3),transparent_50%)]" />
         <FloatingParticles />
@@ -773,11 +1139,9 @@ function Home() {
         <div className="container-x grid gap-12 lg:grid-cols-2 lg:items-center relative">
           <Reveal>
             <div>
-              {/* Animated Logo Section */}
               <div className="mb-6">
                 <AnimatedLogo />
               </div>
-              
               <motion.span 
                 className="inline-block text-sm font-semibold uppercase tracking-wider text-accent"
                 whileHover={{ scale: 1.05 }}
@@ -796,8 +1160,6 @@ function Home() {
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link to="/about" className="btn-ghost-primary">About Wintech</Link>
                 </motion.div>
-                
-                {/* Enhanced Learn More Button with Popup */}
                 <LearnMoreButton>
                   Learn More
                 </LearnMoreButton>
@@ -875,7 +1237,7 @@ function Home() {
         </div>
       </section>
 
-      {/* BRANDS with animated marquee */}
+      {/* BRANDS */}
       <section className="py-12 border-b border-border bg-surface overflow-hidden">
         <div className="container-x">
           <p className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -909,7 +1271,7 @@ function Home() {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
+      {/* TESTIMONIALS - Enhanced with Clickable Tiles & Fixed Carousel with Timer */}
       <section className="section-pad bg-surface relative">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(255,107,53,0.05),transparent_50%)]" />
         <div className="container-x relative">
@@ -917,18 +1279,43 @@ function Home() {
             <SectionHead
               eyebrow="Client Stories"
               title="What our customers say"
-              sub="Real feedback from businesses and homeowners across Mysore. Browse through, or let it play on its own."
+              sub="Click on any testimonial to read the full story in detail."
             />
           </Reveal>
+          
+          {/* Clickable Testimonial Grid */}
           <Reveal delay={100}>
-            <div className="mt-12 mx-auto max-w-3xl">
-              <TestimonialsCarousel items={TESTIMONIALS} />
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {TESTIMONIALS.map((testimonial, index) => (
+                <ClickableTestimonialTile
+                  key={index}
+                  testimonial={testimonial}
+                  onClick={() => handleTestimonialClick(testimonial)}
+                />
+              ))}
+            </div>
+          </Reveal>
+
+          {/* Fixed Carousel with Countdown Timer */}
+          <Reveal delay={150}>
+            <div className="mt-12">
+              <p className="text-center text-sm text-muted-foreground mb-6">
+                Or browse through the carousel
+              </p>
+              <FixedTestimonialsCarousel items={TESTIMONIALS} />
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* CTA with 3D hover effect */}
+      {/* Enhanced Testimonial Popup (No Avatar, No Role) */}
+      <TestimonialPopup
+        testimonial={selectedTestimonial}
+        isOpen={isTestimonialPopupOpen}
+        onClose={handleCloseTestimonialPopup}
+      />
+
+      {/* CTA */}
       <section className="pb-20">
         <div className="container-x">
           <motion.div 
@@ -940,7 +1327,6 @@ function Home() {
             <div className="absolute -left-16 bottom-0 h-56 w-56 rounded-full bg-cyan/25 blur-3xl animate-pulse delay-1000" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,107,53,0.1),transparent_70%)]" />
             <FloatingParticles />
-            
             <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
               <div>
                 <motion.h2 
@@ -1035,7 +1421,10 @@ export function SectionHead({
   );
 }
 
+// silence unused warnings for icons imported for potential future use
 void ChevronRight;
 void Globe;
 void Heart;
 void ZapIcon;
+void User;
+void Briefcase;
