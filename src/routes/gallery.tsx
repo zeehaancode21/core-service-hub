@@ -22,8 +22,6 @@ interface Project { title: string; category: string; img: string }
 
 const CATS = ["All", "CCTV", "Office IT", "Server & Network", "Electrical", "Biometrics", "Hotel Maintenance"];
 
-// A short line describing the work we do for each category — shown above
-// the related photos once that category is selected.
 const CAT_DESCRIPTIONS: Record<string, string> = {
   "CCTV": "We install, service and maintain CCTV camera systems — cabling, DVR/NVR setup, remote viewing and ongoing technical support.",
   "Office IT": "We set up and maintain office IT — computers, LAN cabling, workstations and day-to-day technical support for businesses.",
@@ -33,27 +31,79 @@ const CAT_DESCRIPTIONS: Record<string, string> = {
   "Hotel Maintenance": "I maintain these hotel's CCTV systems and handle the technical work involved — installation, servicing and ongoing support.",
 };
 
-const PROJECTS: Project[] = [
-  { title: "Retail store surveillance — 24 cameras", category: "CCTV", img: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=900&q=70" },
-  { title: "Corporate office IT setup", category: "Office IT", img: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=70" },
-  { title: "Server rack & structured cabling", category: "Server & Network", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=70" },
-  { title: "Panel board & MCB installation", category: "Electrical", img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=900&q=70" },
-  { title: "Biometric attendance for factory", category: "Biometrics", img: "https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?auto=format&fit=crop&w=900&q=70" },
+// --------------------------------------------------------------------------
+// AUTO-LOADED IMAGES
+// Drop any image files (any filename, any of jpg/jpeg/png/webp) into these
+// folders and they will show up automatically — no filename list to maintain,
+// so this can't silently break the way a hardcoded list can.
+//   src/assets/gallery/cctv/
+//   src/assets/gallery/office-it/
+//   src/assets/gallery/server-network/
+//   src/assets/gallery/electrical/
+//   src/assets/gallery/biometrics/
+// --------------------------------------------------------------------------
+
+function loadFolder(pattern: Record<string, string>, category: string): Project[] {
+  return Object.entries(pattern)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([path, url], i) => {
+      const filename = path.split("/").pop() ?? `${category} ${i + 1}`;
+      const niceName = filename.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
+      return { title: niceName || `${category} Project ${i + 1}`, category, img: url };
+    });
+}
+
+const cctvImages = import.meta.glob("/src/assets/gallery/cctv/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", {
+  eager: true,
+  query: "?url",
+  import: "default",
+}) as Record<string, string>;
+
+const officeImages = import.meta.glob("/src/assets/gallery/office-it/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", {
+  eager: true,
+  query: "?url",
+  import: "default",
+}) as Record<string, string>;
+
+const serverImages = import.meta.glob("/src/assets/gallery/server-network/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", {
+  eager: true,
+  query: "?url",
+  import: "default",
+}) as Record<string, string>;
+
+const electricalImages = import.meta.glob("/src/assets/gallery/electrical/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", {
+  eager: true,
+  query: "?url",
+  import: "default",
+}) as Record<string, string>;
+
+const biometricsImages = import.meta.glob("/src/assets/gallery/biometrics/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", {
+  eager: true,
+  query: "?url",
+  import: "default",
+}) as Record<string, string>;
+
+// Hotel Maintenance is left exactly as it was — it already works.
+const HOTEL_PROJECTS: Project[] = [
   { title: "YUVRAJ COMFORTS", category: "Hotel Maintenance", img: `${import.meta.env.BASE_URL}YUVRAJ COMFORTS.jpg` },
   { title: "YUVRAJ PALACE INN", category: "Hotel Maintenance", img: `${import.meta.env.BASE_URL}YUVRAJ PALACE INN.jpg` },
   { title: "YUVRAJ GALAXY INN", category: "Hotel Maintenance", img: `${import.meta.env.BASE_URL}YUVRAJ GALAXY INN.jpg` },
   { title: "YUVRAJ LE ROYALE", category: "Hotel Maintenance", img: `${import.meta.env.BASE_URL}YUVRAJ LE ROYALE.jpg` },
   { title: "YUVRAJ LANDMARK", category: "Hotel Maintenance", img: `${import.meta.env.BASE_URL}YUVRAJ LANDMARK.jpg` },
-  { title: "LAN cabling — 40 workstations", category: "Office IT", img: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=900&q=70" },
-  { title: "UPS & inverter for showroom", category: "Electrical", img: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=70" },
-  { title: "Dell server + Windows Server setup", category: "Server & Network", img: "https://images.unsplash.com/photo-1591808216268-ce0b82787efe?auto=format&fit=crop&w=900&q=70" },
+];
+
+const PROJECTS: Project[] = [
+  ...loadFolder(cctvImages, "CCTV"),
+  ...loadFolder(officeImages, "Office IT"),
+  ...loadFolder(serverImages, "Server & Network"),
+  ...loadFolder(electricalImages, "Electrical"),
+  ...loadFolder(biometricsImages, "Biometrics"),
+  ...HOTEL_PROJECTS,
 ];
 
 function Gallery() {
   const [cat, setCat] = useState<string>("All");
 
-  // "All" shows one cover photo per category (not every photo).
-  // Selecting a specific category shows every photo that belongs to it.
   const list =
     cat === "All"
       ? CATS.filter((c) => c !== "All")
@@ -61,7 +111,6 @@ function Gallery() {
           .filter((p): p is Project => Boolean(p))
       : PROJECTS.filter((p) => p.category === cat);
 
-  // How many photos exist in each category — used for the "N photos" badge on All
   const countByCategory = (category: string) =>
     PROJECTS.filter((p) => p.category === category).length;
 
@@ -98,12 +147,19 @@ function Gallery() {
             </Reveal>
           )}
 
+          {list.length === 0 && cat !== "All" && (
+            <p className="mt-10 text-center text-sm text-muted-foreground">
+              No photos yet in this category — drop image files into{" "}
+              <code>src/assets/gallery/{cat.toLowerCase().replace(/\s+/g, "-").replace("&", "")}</code> and they'll appear here.
+            </p>
+          )}
+
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {list.map((p, i) => {
               const isCover = cat === "All";
               const count = countByCategory(p.category);
               return (
-                <Reveal key={`${p.category}-${p.title}`} delay={i * 60}>
+                <Reveal key={`${p.category}-${p.title}-${i}`} delay={i * 60}>
                   <figure
                     onClick={isCover ? () => setCat(p.category) : undefined}
                     className={`group relative overflow-hidden rounded-xl border border-border bg-card shadow-sm ${
