@@ -73,10 +73,10 @@ const STEPS = [
   { n: "01", title: "Enquiry", desc: "Call, WhatsApp or fill our form. Tell us your requirement." },
   { n: "02", title: "Site Visit", desc: "Free consultation and site survey by our engineer." },
   { n: "03", title: "Installation", desc: "Professional installation with tested, branded products." },
-  { n: "04", title: "Support & AMC", desc: "Ongoing maintenance, quick fixes, and yearly contracts." },
+  { n: "04", title: "Support & AMC", desc: "Ongoing maintenance, quick repairs, and monthly or yearly service contracts." },
 ] as const;
 
-const BRANDS = ["Hikvision", "CP Plus", "HP", "Lenovo", "Dahua", "Cisco", "TP-Link", "Epson", "Canon"];
+const BRANDS = [ "Hikvision", "CP Plus", "HP", "Lenovo", "Dahua", "Cisco", "TP-Link", "Epson", "Canon", "Acer", "DELL", "ASUS", "Gigabyte", "Zebra", "Tally", "JPOS", "Petpooja", "MyBillBook", "BusyWin"] as const;
 
 const TESTIMONIALS: Testimonial[] = [
   { name: "Rajesh Kumar", role: "Owner, Prime Retail Mysore", service: "CCTV & Billing", text: "Wintech installed our full CCTV system and billing setup. Zero downtime in two years and their AMC response is genuinely same-day." },
@@ -830,105 +830,12 @@ const LearnMoreButton = memo(function LearnMoreButton({
 });
 
 /* ------------------------------------------------------------------ */
-/*  Certificate popup — enhanced with gradient border animation       */
-/* ------------------------------------------------------------------ */
-
-const CertificatePopup = memo(function CertificatePopup({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          <motion.div
-            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-          />
-
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          >
-            <div
-              className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl"
-              style={{
-                background: "linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%)",
-                border: "1px solid rgba(255,255,255,0.1)",
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div
-                className="wt-bg-pan absolute inset-0 rounded-2xl opacity-50 blur-[2px] -z-10"
-                style={{ backgroundImage: "linear-gradient(45deg, #FF6B35, #FF4500, #FF6B35, #FF8C00)" }}
-              />
-
-              <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-accent/20 blur-3xl animate-pulse" />
-              <div
-                className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-blue-500/20 blur-3xl animate-pulse"
-                style={{ animationDelay: "1s" }}
-              />
-
-              <div className="p-6 sm:p-8 lg:p-10 relative z-10">
-                <div className="mt-8">
-                  <div className="relative rounded-xl overflow-hidden border border-white/10 shadow-2xl transition-transform duration-300 hover:scale-[1.02]">
-                    <img
-                      src={`${import.meta.env.BASE_URL}dell.png`}
-                      alt="Dell Certificate"
-                      className="w-full h-auto rounded-lg"
-                    />
-                  </div>
-                  <p className="mt-3 text-center text-sm text-white/60">Authorized Dell Partner Certificate</p>
-                </div>
-
-                <div className="mt-8 flex flex-wrap gap-3 justify-center sm:justify-start">
-                  <a
-                    href={`tel:${SITE.phone}`}
-                    className="flex-1 min-w-[140px] rounded-xl bg-gradient-to-r from-accent to-primary px-6 py-3 text-center text-base font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-[0_15px_30px_-10px_rgba(255,107,53,0.5)] active:scale-95"
-                  >
-                    <Phone className="mr-2 inline h-5 w-5" />
-                    Call Now
-                  </a>
-                  <a
-                    href={`https://wa.me/${SITE.whatsapp}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex-1 min-w-[140px] rounded-xl border-2 border-white/20 px-6 py-3 text-center text-base font-semibold text-white transition-all hover:scale-105 hover:border-accent hover:bg-accent/10 active:scale-95"
-                  >
-                    <MessageSquare className="mr-2 inline h-5 w-5" />
-                    WhatsApp
-                  </a>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onClose();
-                    }}
-                    type="button"
-                    className="flex-1 min-w-[140px] rounded-xl border border-white/10 px-6 py-3 text-center text-base font-semibold text-white/80 transition-all hover:scale-105 hover:bg-white/10 hover:text-white active:scale-95"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
-  );
-});
-
-/* ------------------------------------------------------------------ */
 /*  Home page — uses merged components with ENHANCED CTA              */
 /* ------------------------------------------------------------------ */
 
 function Home() {
   const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial | null>(null);
   const [isTestimonialPopupOpen, setIsTestimonialPopupOpen] = useState(false);
-  const [isCertificateOpen, setIsCertificateOpen] = useState(false);
 
   const handleTestimonialSelect = useCallback((testimonial: Testimonial) => {
     setSelectedTestimonial(testimonial);
@@ -939,9 +846,6 @@ function Home() {
     setIsTestimonialPopupOpen(false);
     setTimeout(() => setSelectedTestimonial(null), 300);
   }, []);
-
-  const handleCertificateClick = useCallback(() => setIsCertificateOpen(true), []);
-  const handleCloseCertificate = useCallback(() => setIsCertificateOpen(false), []);
 
   return (
     <>
@@ -1091,20 +995,8 @@ function Home() {
           <p className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Authorized partners & brands we work with
           </p>
-          <div className="mt-6 relative">
+          <div className="mt-6">
             <div className="flex items-center justify-center gap-x-10 gap-y-4 flex-wrap">
-              <div
-                className="flex items-center cursor-pointer transition-transform duration-300 hover:scale-[1.2]"
-                onClick={handleCertificateClick}
-              >
-                <span className="text-lg sm:text-xl font-display font-bold text-muted-foreground/70 hover:text-accent transition-colors">
-                  Dell
-                </span>
-                <div className="ml-2 text-xs text-accent/60 hover:text-accent transition-colors">
-                  <BadgeCheck className="h-4 w-4" />
-                </div>
-              </div>
-
               {BRANDS.map((b) => (
                 <span
                   key={b}
@@ -1126,21 +1018,11 @@ function Home() {
             <SectionHead
               eyebrow="Client Stories"
               title="What our customers say"
-              sub="Click on any testimonial to read the full story in detail."
             />
-          </Reveal>
-
-          <Reveal delay={100}>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {TESTIMONIALS.map((testimonial, index) => (
-                <ClickableTestimonialTile key={index} testimonial={testimonial} onSelect={handleTestimonialSelect} />
-              ))}
-            </div>
           </Reveal>
 
           <Reveal delay={150}>
             <div className="mt-12">
-              <p className="text-center text-sm text-muted-foreground mb-6">Or browse through the carousel</p>
               <FixedTestimonialsCarousel items={TESTIMONIALS} />
             </div>
           </Reveal>
@@ -1152,8 +1034,6 @@ function Home() {
         isOpen={isTestimonialPopupOpen}
         onClose={handleCloseTestimonialPopup}
       />
-
-      <CertificatePopup isOpen={isCertificateOpen} onClose={handleCloseCertificate} />
 
       <section className="pb-32">
         <div className="container-x">
