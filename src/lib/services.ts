@@ -68,7 +68,7 @@ export const SERVICES: Service[] = [
       "Data backup & recovery solutions",
       "Network security & firewall setup",
       "Cloud & on-premise server solutions",
-      "Server AMC & maintenance",
+      "Server AMC & Maintenance",
     ],
   },
   {
@@ -82,6 +82,7 @@ export const SERVICES: Service[] = [
       "Cartridge refilling & toner sales",
       "Printer AMC / rental services",
       "Network printer setup",
+      "Provide All Type of Billing printer's (3inch & 4inch with roll & ribbon's)"
     ],
   },
   {
@@ -108,6 +109,14 @@ export const SERVICES: Service[] = [
       "Inventory management software",
       "Custom billing software installation & training",
       "Software support & updates",
+      "Tally",
+      "JPOS",
+      "Petpooja",
+      "MyBillBook",
+      "BusyWin",
+      "Designing Software",
+      "All Type of OS and Microsoft Software's",
+      "All Type of DTP Software's",
     ],
   },
   {

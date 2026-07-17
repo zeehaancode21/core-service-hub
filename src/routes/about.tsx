@@ -216,7 +216,7 @@ function About() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                Whether it's protecting your business with CCTV, setting up office IT infrastructure, deploying servers & networks, repairing desktops and laptops, installing printers, implementing biometric attendance, providing GST billing software, or handling electrical works, we deliver complete technology solutions that simply work.
+                Whether it's protecting your business with CCTV, setting up office IT infrastructure, deploying servers & networks, repairing desktops and laptops, installing printers, implementing biometric attendance, providing GST billing software's, or handling electrical works, we deliver complete technology solutions that simply work.
               </motion.div>
             </div>
           }
@@ -257,7 +257,7 @@ function About() {
                 </div>
                 <div className="mt-3 text-lg text-white/85">Years serving Mysore</div>
                 <div className="mt-8 grid grid-cols-2 gap-6 max-w-xs mx-auto">
-                  <Stat n={2500} suf="+" label="Projects" />
+                  <Stat n={600} suf="+" label="Projects" />
                   <Stat n={800} suf="+" label="Clients" />
                 </div>
               </div>

@@ -57,7 +57,7 @@ export const Route = createFileRoute("/")({
 
 const STATS = [
   { icon: Award, value: 12, suffix: "+", label: "Years of Experience" },
-  { icon: BadgeCheck, value: 2500, suffix: "+", label: "Projects Completed" },
+  { icon: BadgeCheck, value: 600, suffix: "+", label: "Projects Completed" },
   { icon: Users, value: 800, suffix: "+", label: "Happy Clients" },
   { icon: Clock, value: 24, suffix: "h", label: "Response Time" },
 ] as const;
@@ -637,7 +637,7 @@ const LEARN_MORE_FEATURES = [
 ] as const;
 
 const LEARN_MORE_STATS = [
-  { label: "Projects", value: "2500+", icon: CheckCircle, color: "from-blue-500 to-cyan-400" },
+  { label: "Projects", value: "600+", icon: CheckCircle, color: "from-blue-500 to-cyan-400" },
   { label: "Clients", value: "800+", icon: Users, color: "from-green-500 to-emerald-400" },
   { label: "Experience", value: "12+", icon: Award, color: "from-yellow-500 to-orange-400" },
 ] as const;
